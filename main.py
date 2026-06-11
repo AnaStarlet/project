@@ -17,9 +17,9 @@ def maxArea(height):
             right = right - 1
 
     return max_val
+if __name__ == "__main__":
+    array = input("Input: height = ")
+    height = [int(x) for x in array.split()]
 
-array = input("Input: height = ")
-height = [int(x) for x in array.split()]
-
-result = maxArea(height)
-print("Output:", result)
+    result = maxArea(height)
+    print("Output:", result)
