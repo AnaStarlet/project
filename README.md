@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Container With Most Water
 
 You are given an integer array height of length n.
@@ -20,3 +21,6 @@ Notice that you may not slant the container.
 
 **Explanation:** The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. 
 In this case, the max area of water the container can contain is 49.
+=======
+# project
+>>>>>>> 6b9407888fe20e5eecf5cbb356a8b26daa301b5b
