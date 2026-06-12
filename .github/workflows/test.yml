@@ -1,17 +1,27 @@
 name: Run unit tests
+
 on:
   push:
     branches: [ main, dev ]
   pull_request:
     branches: [ main, dev ]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Run tests
-        run: python -m unittest test_watercontainer.py
+      
+      - name: Run tests for water_container
+        run: python -m unittest discover -s water_container -p "test_*.py"
+      
+      - name: Run tests for postamat
+        run: python -m unittest discover -s postamat -p "test_*.py"

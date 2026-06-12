@@ -1,5 +1,5 @@
 import unittest
-from main import maxArea
+from water_container.main import maxArea
 
 class TestMaxArea(unittest.TestCase):
     def test_add_1(self):
