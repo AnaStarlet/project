@@ -29,14 +29,15 @@ class TestPostamat(unittest.TestCase):
         cell = postamat.get_order("9999")
         self.assertIsNone(cell)
 
-    def test_no_free_cells(self): #непустая ячейка
+    def test_no_free_cells(self): #нет свободных ячеек
         mock_client = Mock(spec=UserNotificationApi)
+        mock_client.send_sms.return_value = "1111"  # ← добавили
         postamat = PostalBox(1, mock_client)
         postamat.place_order(111, "+79001111111")
         with self.assertRaises(ValueError):
             postamat.place_order(222, "+79002222222")
 
-    def test_get_order_success(self): #верный номер
+    def test_get_order_success(self): #верный код
         mock_client = Mock(spec=UserNotificationApi)
         mock_client.send_sms.return_value = "2345"
         postamat = PostalBox(3, mock_client)
@@ -46,8 +47,3 @@ class TestPostamat(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-
-
-
-
