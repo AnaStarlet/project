@@ -15,3 +15,23 @@ class Note(BaseModel):
     content: str
     class Config:
         from_attributes = True
+
+from pydantic import EmailStr
+
+class UserBase(BaseModel):
+    username: str
+    email: EmailStr
+
+class UserCreate(UserBase):
+    password: str
+
+class UserResponse(UserBase):
+    id: int
+    is_active: bool
+
+    class Config:
+        from_attributes = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
