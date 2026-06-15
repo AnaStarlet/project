@@ -11,10 +11,7 @@ from database import engine, get_db
 from routers_auth import router as auth_router
 from auth import get_current_user
 
-models.Base.metadata.create_all(bind=engine)
-
 app = FastAPI(title="Notes app")
-
 app.include_router(auth_router)
 
 @app.post("/notes", response_model=schemas.Note)

@@ -7,8 +7,10 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from database import SessionLocal
 import models, schemas
+from database import get_db
+import os
 
-SECRET_KEY = "6185"
+SECRET_KEY = os.getenv("SECRET_KEY", "default-secret-key-change-me")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -37,15 +39,7 @@ def decode_access_token(token: str):
         return None
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")  # без auto_error=False
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 def get_current_user(
