@@ -39,7 +39,7 @@ def update_note(note_id: int, note_data: schemas.NoteUpdate, db: Session = Depen
     db.refresh(db_note)
     return db_note
 
-@app.delete("/notes/{note_id}")  # Было delete_note, нужно просто delete
+@app.delete("/notes/{note_id}")
 def delete_note(note_id: int, db: Session = Depends(get_db)):
     success = crud.delete_note(db, note_id=note_id)
     if not success:
