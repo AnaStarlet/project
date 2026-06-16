@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List
 import sys
@@ -12,6 +13,15 @@ from routers_auth import router as auth_router
 from auth import get_current_user
 
 app = FastAPI(title="Notes app")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(auth_router)
 
 @app.post("/notes", response_model=schemas.Note)
@@ -21,6 +31,7 @@ def create_note(
     current_user: models.User = Depends(get_current_user)
 ):
     return crud.create_note(db=db, note=note, user_id=current_user.id)
+
 @app.get("/notes", response_model=List[schemas.Note])
 def read_notes(
     db: Session = Depends(get_db),
