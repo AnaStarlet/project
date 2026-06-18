@@ -23,6 +23,7 @@ jobs:
         context: ./notes
         file: ./notes/Dockerfile
         push: false
+        load: true
         tags: notes-backend:latest
 
     - name: Build Frontend
@@ -31,6 +32,7 @@ jobs:
         context: ./frontend
         file: ./frontend/Dockerfile
         push: false
+        load: true
         tags: notes-frontend:latest
 
     - name: Verify Backend build
