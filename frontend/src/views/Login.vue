@@ -2,13 +2,19 @@
   <div class="container">
     <h2>Вход</h2>
     <form @submit.prevent="login">
-      <input v-model="username" placeholder="Имя пользователя" />
-      <input v-model="password" type="password" placeholder="Пароль" />
+      <input v-model="username" placeholder="Имя пользователя" required />
+      <input v-model="password" type="password" placeholder="Пароль" required />
       <button type="submit">Войти</button>
     </form>
+    
     <div class="links">
-      Нет аккаунта?
-      <a href="#" @click.prevent="$emit('switch-to-register')">Зарегистрироваться</a>
+      <div>
+        Нет аккаунта?
+        <a href="#" @click.prevent="$emit('switch-to-register')">Зарегистрироваться</a>
+      </div>
+      <div style="margin-top: 8px;">
+        <a href="#" @click.prevent="goToPasswordReset">Забыли пароль?</a>
+      </div>
     </div>
   </div>
 </template>
@@ -38,9 +44,16 @@ export default {
         localStorage.setItem('access_token', response.data.access_token)
         this.$parent.page = 'notes'
       } catch (error) {
-        console.error('Ошибка:', error.response?.data)
-        alert('Ошибка входа: ' + (error.response?.data?.detail || 'неверные данные'))
+        const detail = error.response?.data?.detail
+        if (detail === 'Please verify your email first') {
+          alert('Пожалуйста, подтвердите ваш email. Проверьте почту.')
+        } else {
+          alert('Ошибка входа: ' + (detail || 'неверные данные'))
+        }
       }
+    },
+    goToPasswordReset() {
+      this.$parent.page = 'password-reset'
     },
   },
 }

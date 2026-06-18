@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+from pydantic import EmailStr
 
 class NoteCreate(BaseModel):
     title: str
@@ -16,8 +17,6 @@ class Note(BaseModel):
     class Config:
         from_attributes = True
 
-from pydantic import EmailStr
-
 class UserBase(BaseModel):
     username: str
     email: EmailStr
@@ -28,7 +27,6 @@ class UserCreate(UserBase):
 class UserResponse(UserBase):
     id: int
     is_active: bool
-
     class Config:
         from_attributes = True
 

@@ -2,9 +2,9 @@
   <div class="container">
     <h2>Регистрация</h2>
     <form @submit.prevent="register">
-      <input v-model="username" placeholder="Имя пользователя" />
-      <input v-model="email" placeholder="Email" />
-      <input v-model="password" type="password" placeholder="Пароль" />
+      <input v-model="username" placeholder="Имя пользователя" required minlength="3" />
+      <input v-model="email" type="email" placeholder="Email" required />
+      <input v-model="password" type="password" placeholder="Пароль" required minlength="6" />
       <button type="submit">Зарегистрироваться</button>
     </form>
     <div class="links">
@@ -34,14 +34,12 @@ export default {
           email: this.email,
           password: this.password,
         })
-        alert('Регистрация успешна! Теперь войдите.')
+        alert('Регистрация успешна!\n\nНа ваш email отправлено письмо с подтверждением.\nПожалуйста, перейдите по ссылке в письме, чтобы активировать аккаунт.')
         this.$emit('switch-to-login')
       } catch (error) {
-        console.error('Ошибка:', error.response?.data)
         alert('Ошибка регистрации: ' + (error.response?.data?.detail || 'неизвестная ошибка'))
       }
     },
   },
 }
-
 </script>

@@ -1,9 +1,7 @@
-version: '3.8'
-
 services:
-  db:
+  postgres:
     image: postgres:15
-    container_name: notes_db_container
+    container_name: notes_postgres
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -13,26 +11,46 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  app:
-    build: ./notes
-    container_name: notes_app_container
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.5
+    container_name: notes_keycloak
     restart: always
-    ports:
-      - "8000:8000"
     environment:
-      DATABASE_URL: postgresql://postgres:6185@db:5432/notes_db
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/notes_db
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: 6185
+      KC_HOSTNAME: localhost
+      KC_HTTP_ENABLED: "true"
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_FEATURES: preview
+    ports:
+      - "8080:8080"
     depends_on:
-      - db
+      postgres:
+        condition: service_healthy
+    command: start-dev
 
-  frontend:
-    build: ./frontend
-    container_name: notes_frontend_container
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: notes_mailhog
     restart: always
     ports:
-      - "5173:5173"
-    depends_on:
-      - app
+       - "8025:8025"
+       - "1025:1025"
+    environment:
+      MH_STORAGE: maildir
+      MH_MAILDIR_PATH: /maildir
+    volumes:
+      - mailhog_data:/maildir
 
 volumes:
   postgres_data:
+  mailhog_data:

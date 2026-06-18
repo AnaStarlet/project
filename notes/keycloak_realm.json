@@ -1,0 +1,47 @@
+{
+  "realm": "notes",
+  "enabled": true,
+  "displayName": "Notes App",
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "clients": [
+    {
+      "clientId": "notes-client",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "your-client-secret",
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": ["http://localhost:5173/*"],
+      "webOrigins": ["http://localhost:5173"]
+    }
+  ],
+  "users": [],
+  "roles": {
+    "realm": [
+      {
+        "name": "user",
+        "description": "Regular user"
+      },
+      {
+        "name": "admin",
+        "description": "Administrator"
+      }
+    ]
+  },
+  "defaultRoles": ["user"],
+  "requiredCredentials": ["password"],
+  "passwordPolicy": "length(8) and digits(1) and lowerCase(1) and upperCase(1)",
+  "emailTheme": "base",
+  "smtpServer": {
+    "host": "mailhog",
+    "port": 1025,
+    "from": "noreply@notes-app.com",
+    "auth": false,
+    "starttls": false
+  }
+}

@@ -8,7 +8,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent))
 
 import models, schemas, crud
-from database import engine, get_db
+from database import get_db
 from routers_auth import router as auth_router
 from auth import get_current_user
 
@@ -47,7 +47,7 @@ def read_note(
 ):
     db_note = crud.get_note(db, note_id=note_id, user_id=current_user.id)
     if db_note is None:
-        raise HTTPException(status_code=404, detail="заметка не найдена")
+        raise HTTPException(status_code=404, detail="Note not found")
     return db_note
 
 @app.put("/notes/{note_id}", response_model=schemas.Note)
@@ -59,7 +59,7 @@ def update_note(
 ):
     db_note = crud.update_note(db, note_id=note_id, user_id=current_user.id, note_data=note_data)
     if db_note is None:
-        raise HTTPException(status_code=404, detail="заметка не найдена")
+        raise HTTPException(status_code=404, detail="Note not found")
     return db_note
 
 @app.delete("/notes/{note_id}")
@@ -70,5 +70,5 @@ def delete_note(
 ):
     success = crud.delete_note(db, note_id=note_id, user_id=current_user.id)
     if not success:
-        raise HTTPException(status_code=404, detail="заметка не найдена")
-    return {"message": "заметка удалена успешно"}
+        raise HTTPException(status_code=404, detail="Note not found")
+    return {"message": "Note deleted successfully"}

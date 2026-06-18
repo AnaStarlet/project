@@ -13,7 +13,6 @@
     </div>
 
     <div v-for="note in notes" :key="note.id" class="note">
-      <!-- Режим редактирования -->
       <template v-if="editingNoteId === note.id">
         <input v-model="editTitle" placeholder="Заголовок" />
         <textarea v-model="editContent" placeholder="Текст заметки"></textarea>
@@ -23,12 +22,11 @@
         </div>
       </template>
 
-      <!-- Режим просмотра -->
       <template v-else>
         <h3>{{ note.title }}</h3>
         <p>{{ note.content }}</p>
         <div class="actions">
-          <button @click="startEdit(note)">Редактировать</button> |
+          <button @click="startEdit(note)">Редактировать</button>
           <button class="danger" @click="deleteNote(note.id)">Удалить</button>
         </div>
       </template>
