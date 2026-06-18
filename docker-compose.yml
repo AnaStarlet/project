@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   postgres:
     image: postgres:15
@@ -29,27 +31,61 @@ services:
       KC_HOSTNAME: localhost
       KC_HTTP_ENABLED: "true"
       KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin123
       KC_FEATURES: preview
     ports:
       - "8080:8080"
     depends_on:
       postgres:
         condition: service_healthy
-    command: start-dev
+    volumes:
+      - ./notes/keycloak_realm.json:/opt/keycloak/data/import/realm.json
+    command: start-dev --import-realm
 
   mailhog:
     image: mailhog/mailhog:latest
     container_name: notes_mailhog
     restart: always
     ports:
-       - "8025:8025"
-       - "1025:1025"
+      - "8025:8025"
+      - "1025:1025"
     environment:
       MH_STORAGE: maildir
       MH_MAILDIR_PATH: /maildir
     volumes:
       - mailhog_data:/maildir
+
+  app:
+    build: ./notes
+    container_name: notes_app
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:6185@postgres:5432/notes_db
+      SECRET_KEY: your-secret-key-here-change-in-production
+      KEYCLOAK_SERVER_URL: http://keycloak:8080
+      KEYCLOAK_REALM: notes-realm
+      KEYCLOAK_CLIENT_ID: notes-client
+      KEYCLOAK_CLIENT_SECRET: c5ycHw7G18oZdSxpD8Pxk5JUMEkAmVMx
+      MAILHOG_HOST: mailhog
+      MAILHOG_PORT: 1025
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+      mailhog:
+        condition: service_started
+
+  frontend:
+    build: ./frontend
+    container_name: notes_frontend
+    restart: always
+    ports:
+      - "5173:5173"
+    depends_on:
+      - app
 
 volumes:
   postgres_data:
