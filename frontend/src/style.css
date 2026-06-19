@@ -1,0 +1,123 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  background: #f7fafc;
+  color: #2d3748;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #2d3748;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+input, textarea {
+  padding: 10px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #EE82EE;
+  box-shadow: 0 0 0 3px rgba(238, 130, 238, 0.1);
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+button {
+  padding: 10px 20px;
+  background: #EE82EE;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #d96bd9;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button.secondary {
+  background: #e2e8f0;
+  color: #2d3748;
+}
+
+button.secondary:hover {
+  background: #cbd5e0;
+}
+
+button.danger {
+  background: #fc8181;
+}
+
+button.danger:hover {
+  background: #f56565;
+}
+
+.links {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.links a {
+  color: #EE82EE;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+.loading, .success, .error {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.loading { color: #EE82EE; }
+.success { color: #27ae60; }
+.error { color: #e74c3c; }
+
+.error button {
+  margin-top: 20px;
+  background: #e74c3c;
+}
+
+.error button:hover {
+  background: #c0392b;
+}

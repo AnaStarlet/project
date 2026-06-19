@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: notes_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 6185
+      POSTGRES_DB: notes_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: notes_mailhog
+    restart: always
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  app:
+    build: ./notes
+    container_name: notes_app
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:6185@postgres:5432/notes_db
+      MAILHOG_HOST: mailhog
+      MAILHOG_PORT: 1025
+      SECRET_KEY: your-secret-key-change-me
+    depends_on:
+      - postgres
+      - mailhog
+    volumes:
+      - ./notes:/app
+
+volumes:
+  postgres_data:
