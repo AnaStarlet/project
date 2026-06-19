@@ -1,0 +1,42 @@
+name: Docker Build
+
+on:
+  push:
+    branches: [ "feature/notes-app", "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Backend (notes)
+      uses: docker/build-push-action@v5
+      with:
+        context: ./notes
+        file: ./notes/Dockerfile
+        push: false
+        load: true
+        tags: notes-backend:latest
+
+    - name: Build Frontend
+      uses: docker/build-push-action@v5
+      with:
+        context: ./frontend
+        file: ./frontend/Dockerfile
+        push: false
+        load: true
+        tags: notes-frontend:latest
+
+    - name: Verify Backend build
+      run: docker images | grep notes-backend
+
+    - name: Verify Frontend build
+      run: docker images | grep notes-frontend

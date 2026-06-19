@@ -3,3 +3,11 @@ __pycache__/
 *.pyc
 .idea/
 .env
+node_modules/
+package-lock.json
+package.json
+.vite/
+.vscode/
+dist/
+*.log
+.DS_Store
